@@ -27,19 +27,18 @@
 [Getting Started]()
 
   * # Getting Started
-  * [Installing Linux on Windows](pages/subitem1.md)
-  * [Installing Nuttx](pages/subitem2.md)
-  * [Setup](pages/subitem2.md)
+  * [Installing Linux on Windows](pages/getting-started_installing_linux.md)
+  * [Installing Nuttx](pages/getting-started_installing_nuttx.md)
+  * [Setup](pages/getting-started_setup.md)
   - - - -
-  * # SubMenu Heading 2
+  <!--* # SubMenu Heading 2
   * [SubMenu Item 3](pages/subitem3.md)
   - - - -
   * # SubMenu Heading 3
-  * [SubMenu Item 3](pages/subitem3.md)
+  * [SubMenu Item 3](pages/subitem3.md) -->
 
-[Menu Item 2](pages/item2.md)
+[Menu Item 2](pages/Home.md)
 
-[Menu Item 3](pages/item3.md)
 
 ---------------------------------------------------------------------------- -->
 
