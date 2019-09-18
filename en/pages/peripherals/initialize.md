@@ -8,17 +8,17 @@ According to Greg:
   > Putting all initialization logic to stm32_bringup() is more flexible and
   > supports alternative board initialize strategies.  Whenever I work with
   > a board that does initialization within board_app_initialize(), I change
-  > it.  I move the initialization to <arch_name>_bringup.c and call <arch_name>_bringup().
-  > Someday all boards will be converted to use <arch_name>_bringup()!  
+  > it.  I move the initialization to <arch_name>_bringup.c and call `<arch_name>`_bringup().
+  > Someday all boards will be converted to use `<arch_name>`_bringup()!  
 
 So let's standardize the board initialization:
 
 | Replace          | by                                                                            |
 |------------------|-------------------------------------------------------------------------------|
-| **<board_name>** | your board's name   (e.g. **<board_name>**/src --> **nucleo-f4x1re**/src)     |
-| **<arch_name>**  | MCU familly or arch   (e.g. **<arch_name>**_bringup.c -> **stm32**_bringup.c) |
+| `<board_name>` | your board's name   (e.g. `<board_name>`/src --> **nucleo-f4x1re**/src)     |
+| `<arch_name>`  | MCU familly or arch   (e.g. `<arch_name>`_bringup.c -> **stm32**_bringup.c) |
 
-First let's check if <arch_name>_bringup.c exists, from your home directory type:
+First let's check if `<arch_name>`_bringup.c exists, from your home directory type:
 
 ```
 cd nuttxspace/nuttx/configs/<board_name>/src
@@ -32,7 +32,7 @@ cd nuttxspace/nuttx/configs/<board_name>/src
 cp ../../stm32f103-minimum/src/stm32_bringup.c <arch_name>_bringup.c
 ```
 
-then edit <arch_name>_bringup.c, and make the following change:
+then edit `<arch_name>`_bringup.c, and make the following change:
 
 `#include "stm32f103_minimum.h"`
 
@@ -41,7 +41,7 @@ by
 `#include "<board_name>.h"`
 
 
-Edit <arch_name>_boot.c and change the following:
+Edit `<arch_name>`_boot.c and change the following:
 
 ```
 void board_initialize(void)
@@ -80,7 +80,7 @@ void board_initialize(void)
 }
 ```
 
-Edit <board_name>.h and add the following below Public Functions:
+Edit `<board_name>`.h and add the following below Public Functions:
 
 ```
 /****************************************************************************

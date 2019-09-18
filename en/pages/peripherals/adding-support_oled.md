@@ -13,27 +13,27 @@ We will see how to port the OLED support to an other board. I will use the nucle
 
 | Replace          | by                                                                            |
 |------------------|-------------------------------------------------------------------------------|
-| **<board_name>** | your board's name   (e.g. **<board_name>**/src --> **nucleo-f4x1re**/src)     |
-| **<arch_name>**  | MCU familly or arch   (e.g. **<arch_name>**_ssd1306.c -> **stm32**_ssd1306.c) |
+| `<board_name>` | your board's name   (e.g. `<board_name>`/src --> **nucleo-f4x1re**/src)     |
+| `<arch_name>`  | MCU familly or arch   (e.g. `<arch_name>`_ssd1306.c -> **stm32**_ssd1306.c) |
 
 
 **Make sure your board initialization is [standardized](https://github.com/bertvoldenuit/NuttX-Wiki/wiki/peripherals_initialize)**
 
-First let's check if <arch_name>_ssd1306.c exists, from your home directory type:
+First let's check if `<arch_name>`_ssd1306.c exists, from your home directory type:
 
 ```
 cd nuttxspace/nuttx/configs/<board_name>/src
 ls <arch_name>_ssd1306.c
 ```
 
-If it does not exist then copy it into configs/<board_name>/src :
+If it does not exist then copy it into configs/`<board_name>`/src :
 
 ```
 cd nuttxspace/nuttx/configs/<board_name>/src
 cp ../../stm32f103-minimum/src/stm32_ssd1306.c <arch_name>_ssd1306.c
 ```
 
-then edit <arch_name>_ssd1306.c, and change :
+then edit `<arch_name>`_ssd1306.c, and change :
 
 `#include "stm32f103_minimum.h"`
 
