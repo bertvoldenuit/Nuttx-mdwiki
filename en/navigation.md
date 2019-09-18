@@ -36,7 +36,7 @@
   * [Drivers](pages/peripherals/drivers.md)
   * [Adding support OLED](pages/peripherals/adding-support_oled.md)  
 
-  <!--* # SubMenu Heading 2
+  <!-- * # SubMenu Heading 2
   * [SubMenu Item 3](pages/subitem3.md)
   - - - -
   * # SubMenu Heading 3
