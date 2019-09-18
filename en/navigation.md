@@ -3,7 +3,7 @@
   -- Do NOT remove the leading `#` character.
   -->
 
-# Your wiki name
+# Nuttx Workaround
 
 
 <!--
@@ -19,16 +19,17 @@
   -- (Read: http://dynalon.github.io/mdwiki/#!quickstart.md#Adding_a_navigation)
   -->
 
-[About](pages/about.md)
-[Download](pages/download.md)
+<!-- [About](pages/about.md)
+[Download](pages/download.md)-->
 
-<!-- A more complex navigation example: ----------------------------------------
+<!-- A more complex navigation example: ---------------------------------------->
 
-[Menu Item 1]()
+[Getting Started]()
 
-  * # SubMenu Heading 1
-  * [SubMenu Item 1](pages/subitem1.md)
-  * [SubMenu Item 2](pages/subitem2.md)
+  * # Getting Started
+  * [Installing Linux on Windows](pages/subitem1.md)
+  * [Installing Nuttx](pages/subitem2.md)
+  * [Setup](pages/subitem2.md)
   - - - -
   * # SubMenu Heading 2
   * [SubMenu Item 3](pages/subitem3.md)
