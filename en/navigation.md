@@ -31,8 +31,8 @@
 
   * Working on Windows 
   * [Installing Windows Substem for Linux (WSL)](pages/getting-started/installing_WSL.md)
-  * [Installing Nuttx WSL](pages/getting-started/installing_nuttx.md)
-  * [Setup WSL](pages/getting-started/setup.md)
+  * [Installing Nuttx WSL](pages/getting-started/installing_nuttx_WSL.md)
+  * [Setup WSL](pages/getting-started/setup_WSL.md)
   - - - -
 
   * Working on Linux

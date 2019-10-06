@@ -96,9 +96,9 @@ putty
 
 ## 3. Debugging
 
-### 3.1 Code:Blocks
+### 3.1 Code::Blocks
 
-Code:Blocks can also be used as a text editor but more insterstingly, it is a nice graphical interface to use the debugger.
+Code::Blocks can also be used as a text editor but more insterstingly, it is a nice graphical interface to use the debugger.
 
 Here is the tutorial on [Nuttx Channel](https://www.youtube.com/watch?v=KSkv9sOLh4U&list=PLd73yQk5Fd8JEsVD-lhwYRQKVu6glfDa8&index=4)
 

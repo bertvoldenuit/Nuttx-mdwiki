@@ -22,7 +22,7 @@ alias win_home='cd /mnt/c/<win_home>'
 alias nuttxspace='cd /mnt/c/<win_home>/nuttxspace'
 ```
 
-Of course you can modify the above `c` drive letter by which ever you want. It the same for `win_home`, it can be replace by the location
+Of course you can modify the above `c` drive letter by which ever you want. It is the same for `win_home`, it can be replace by the location
 you want it to be, like for example `/mnt/c/Users/<YourUserName>/Documents`. Keep in mind you are under Linux so each folder name should be separated by a `/` not a `\`
 
 
@@ -178,6 +178,9 @@ openocd -f interface/stlink.cfg -f target/stm32f4x.cfg -c init -c "reset halt" -
 In order to execute commands on the NuttX Operating System, we must connect to the NuttShell. Let's setup a serial terminal.
 You can dowload `TeraTerm` [here](https://ttssh2.osdn.jp/). Install and launch it.
 
+In order to get the `COM#` number, you can check it in the device manager. Once, Tera Term is set with the right com port,
+reset the board.
+
 ![image](https://bertvoldenuit.github.io/Nuttx-mdwiki/en/pages/uploads/images/device_com_number.png)
 
 
@@ -232,7 +235,7 @@ Select `Application Configuration` then `Examples` and `Hello World example`
 | Application Configuration |  Examples                   | Hello World example          | yes   |
 
 
-`Note: menuconfig has a slightly different look and has some graphical bugs but it works fine`
+`Note: menuconfig has a slightly different look than on a real Linux installation and has some graphical bugs but it works fine`
 
 ![image](https://bertvoldenuit.github.io/Nuttx-mdwiki/en/pages/uploads/images/menu_config_WSL.png)
 
