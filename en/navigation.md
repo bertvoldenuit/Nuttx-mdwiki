@@ -25,6 +25,7 @@
 <!-- A more complex navigation example: ---------------------------------------->
 
 [Getting Started]()
+
   * [Introduction](pages/getting-started/intro.md)
   - - - -
   * [Installing Windows Substem for Linux](pages/getting-started/installing_WSL.md)
