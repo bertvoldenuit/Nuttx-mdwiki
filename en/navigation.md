@@ -27,11 +27,15 @@
 [Getting Started]()
 
   * [Introduction](pages/getting-started/intro.md)
+  - - - -
 
-  * [Installing Windows Substem for Linux](pages/getting-started/installing_WSL.md)
-  * [Installing Nuttx](pages/getting-started/installing_nuttx.md)
-  * [Setup](pages/getting-started/setup.md)
+  * Working on Windows 
+  * [Installing Windows Substem for Linux (WSL)](pages/getting-started/installing_WSL.md)
+  * [Installing Nuttx WSL](pages/getting-started/installing_nuttx.md)
+  * [Setup WSL](pages/getting-started/setup.md)
+  - - - -
 
+  * Working on Linux
   * [Installing a Linux VM on Windows](pages/getting-started/installing_linux.md)
   * [Installing Nuttx](pages/getting-started/installing_nuttx.md)
   * [Setup](pages/getting-started/setup.md)
