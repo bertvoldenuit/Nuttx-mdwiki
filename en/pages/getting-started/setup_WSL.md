@@ -7,7 +7,7 @@
 
 When it comes to choose a text editor, everyone comes with theirs pros and cons. This is not the purpose of this topic. I chose to use Sublimetext because it is a powerful, lightweight, pretty and highly configurable editor. Moreover, it is working perfectly on windows and linux.
 
-- Sublimetext
+- Download [Sublimetext](https://www.sublimetext.com/)
 - Click on `File->Open Folder` Select `nuttxspace`
 - Click on `View->Side Bar->Show Side Bar`, the nuttxspace tree will appear
 
