@@ -25,8 +25,13 @@
 <!-- A more complex navigation example: ---------------------------------------->
 
 [Getting Started]()
-
-  * [Installing Linux on Windows](pages/getting-started/installing_linux.md)
+  * [Introduction](pages/getting-started/intro.md)
+  - - - -
+  * [Installing Windows Substem for Linux](pages/getting-started/installing_WSL.md)
+  * [Installing Nuttx](pages/getting-started/installing_nuttx.md)
+  * [Setup](pages/getting-started/setup.md)
+  - - - -
+  * [Installing a Linux VM on Windows](pages/getting-started/installing_linux.md)
   * [Installing Nuttx](pages/getting-started/installing_nuttx.md)
   * [Setup](pages/getting-started/setup.md)
   - - - -
