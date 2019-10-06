@@ -8,9 +8,27 @@ In this tutorial, the Nucleo-F411re is used.
 
 ![image](https://user-images.githubusercontent.com/5957713/56863985-87d30600-69bd-11e9-98d2-30ab0db4a137.png)
 
+## Setting a working directory
+
+It is strongly not recommended to modify any file in your ubuntu file system by using a Windows application like 
+Windows file explorer or a text editor executed on Windows. Then, how to interract with Nuttx files?? 
+Simple! All files will be on your home directory in Windows. From the Ubuntu Bash, Windows files are reachable from the `/mnt` folder.
+In order to acces your working directory easily from your Ubuntu Bash, let's create some alias. 
+
+Open Ubuntu terminal and type:
+
+```
+alias win_home='cd /mnt/c/<win_home>'
+alias nuttxspace='cd /mnt/c/<win_home>/nuttxspace'
+```
+
+Of course you can modify the above `c` drive letter by which ever you want. It the same for `win_home`, it can be replace by the location
+you want it to be, like for example `/mnt/c/Users/<YourUserName>/Documents`. Keep in mind you are under Linux so each folder name should be separated by a `/` not a `\`
+
+
 ## Installing the environment tools and NuttX RTOS
 
-Open a terminal
+Open Ubuntu terminal (if it is not already open)
 
 1- Update and Upgrade your Linux distribution
 ```
@@ -19,46 +37,63 @@ sudo apt-get update && sudo apt-get upgrade
 
 2- Install compiler 
 ```
-sudo apt-get install automake bison build-essential flex gcc-arm-none-eabi gperf git libncurses5-dev libtool libusb-dev libusb-1.0.0-dev
+sudo apt-get install automake bison build-essential flex gcc-arm-none-eabi gperf git libncurses5-dev libtool libusb-dev libusb-1.0.0-dev pkg-config
 ```
+
+Say `Yes` to any question asked by the system
 
 3- Create `Nuttxspace` directory and go to it
 ```
-mkdir ~/nuttxspace
-cd ~/nuttxspace
+win_home
+mkdir nuttxspace
 ```
 
-4- Clone OpenOCD (Open On Chip Debugger) repository (see [git documentation](https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control))
-This will allow to connect to the programmer/debugger stlink-v2 on the Nucleo board
+Now you can access nuttxspace from any where by using the alias previously set:
+
 ```
-git clone http://repo.or.cz/r/openocd.git
+nuttxspace
 ```
 
-5- Configure and install OpenOCD
+4- Clone NuttX repository
 ```
-cd ~/nuttxspace/openocd
-./bootstrap
-./configure --enable-internal-jimtcl --enable-maintainer-mode --disable-werror --disable-shared --enable-stlink --enable-jlink --enable-rlink --enable-vslink --enable-ti-icdi --enable-remote-bitbang
-make
-sudo make install
-```
-
-6- Clone NuttX repository
-```
-cd ~/nuttxspace/
+nuttxspace
 git clone https://bitbucket.org/nuttx/nuttx
 git clone https://bitbucket.org/nuttx/apps
 git clone https://bitbucket.org/nuttx/tools
 ```
 
-7- Configure Nuttx
+5- Configure Nuttx
 ```
 cd tools/kconfig-frontends/
 ./configure
 make
 sudo make install
 sudo ldconfig
-cd ~/nuttxspace/nuttx/
+nuttxspace
+```
+
+
+6- Compiling Nuttx
+
+First you need to clean
+```
+nuttxspace
+cd nuttx
+make distclean
+```
+
+Then to configure your target and compile
+```
+cd tools/
+./configure.sh <board_name>:nsh
+cd ..
+make
+```
+
+For example, this is how to clean, set target as Nucleo-F411re and compile Nuttx for it.
+```
+nuttxspace
+cd nuttx
 make distclean
 cd tools/
 ./configure.sh nucleo-f4x1re/f411-nsh
@@ -67,31 +102,33 @@ make
 ```
 As a result the `nuttx.bin` file is created. 
 
+
 ## Flashing target device
 
-Plug the Nucleo board to the computer with the usb cable.
+First, you need to install `OpenOCD`. You can dowload it by visiting this [website](https://gnutoolchains.com/arm-eabi/openocd/). You can
+download a compiled version for windows. Save the zip file to your nuttxspace. You will need to unzip it with [7zip](https://www.7-zip.org/download.html). Rename the folder to `openocd`.
 
-If you are using a Linux distribution on a Virtual Machine on Windows, the device will be recognize first by Windows.
-- Go to the VM taskbar
-- Select Devices
-- Then USB
-- Select your Device. For example `STMicroeletronics STM32.....`
-- The device is now recognized by Linux
+Then, set the `path` to this folder. type `environment variable` in the start menu search bar:
+
+- set the `path='c:\<nuttxspace_directory>\openocd\bin'`.
+
+![image](https://bertvoldenuit.github.io/Nuttx-mdwiki/en/pages/uploads/images/env_var.png)
+
 
 Let's look at how to flash the target board. With a Nucleo board there are two ways of doing it.
 
 + Nucleo board is seen by linux as a flash drive. Simply drag and drop `nuttx.bin` at the root of the device. You're done!
-+ Use openocd to use the programer/debugger to flash the target board. The following is done once for all. It will give 'openocd' access and permission to the device (stlink-v2). It will be very useful later to use stlink-v2 as a debugger.
++ Use openocd to use the programer/debugger to flash the target board. It will be very useful later to use stlink-v2 as a debugger.
 
-```
-cd ~/nuttxspace/
-cd openocd/contrib/
-sudo cp 60-openocd.rules /etc/udev/rules.d/
-sudo udevadm trigger
-```
+Plug the Nucleo board to the computer with the usb cable.
 
 Let's test the connection:
+
+Open a Windows Termnial: In Start menu search bar type `cmd` and open `Command Prompt`.
+
 ```
+cd <nuttxspace>
+cd nuttx
 openocd -f interface/stlink.cfg -f target/stm32f4x.cfg
 ```
 press ctrl-c to exit
@@ -130,36 +167,29 @@ Stlink-v2 is synchronized
 Press ctrl-c to exit
 
 
-In order to flash the MCU (Microcontroller Unit) memory, use the following command:
+In order to flash the MCU (Microcontroller Unit) memory, use the following command in the `nuttx` folder:
 ```
+cd <nuttxspace>
+cd nuttx
 openocd -f interface/stlink.cfg -f target/stm32f4x.cfg -c init -c "reset halt" -c "flash write_image erase nuttx.bin 0x08000000"
 ```
 
 ## NuttShell
 In order to execute commands on the NuttX Operating System, we must connect to the NuttShell. Let's setup a serial terminal.
+You can dowload `TeraTerm` [here](https://ttssh2.osdn.jp/). Install and launch it.
 
-```
-sudo apt-get install minicom
-sudo minicom
-`ctrl-A` then `Z` to get to the menu
-Press `O` and select `Serial port setup`
-Press `A` and change `/dev/tty8` by `/dev/ttyACM0` or whichever your configuration is, 'Enter' twice
-Select `Screen and keyboard`
-Press `P` and `Q` to set linefeed and local echo and press `Enter`
-Exit
-Press `ctrl A E` to toggle local echo (otherwise each key strike is repeated twice)
-Press `ctrl-A H` to Hangup and reset
-Press reset button on the Nucleo board
-```
+![image](https://bertvoldenuit.github.io/Nuttx-mdwiki/en/pages/uploads/images/device_com_number.png)
 
-Now you should have:
+
+
+Reset the board. Now you should have:
 ```
 NuttShell (NSH)                                                                 
                                                                                 
 nsh> 
 ```
 
-Type `help` to get the command list:
+Type `help` or `?` to get the command list:
 ```
 help usage:  help [-v] [<cmd>]
 
@@ -181,8 +211,6 @@ nsh>
 
 ```
 
-Press `ctrl-A X` to exit minicom
-
 ## Hello world Application
 
 In NuttX, a program is considered as an Application which can be launched by the nuttshell.
@@ -190,8 +218,10 @@ NuttX comes with many application examples. MenuConfig is the place to configure
 It is a graphical text based interface.
 Let's try the `Hello World` Application example:
 
+In Ubuntu Bash, type:
 ```
-cd ~/nuttxspace/nuttx/
+nuttxspace
+cd nuttx
 make menuconfig
 ```
 
@@ -201,7 +231,10 @@ Select `Application Configuration` then `Examples` and `Hello World example`
 | ------------------------- |-----------------------------|----------------------------- |:-----:|
 | Application Configuration |  Examples                   | Hello World example          | yes   |
 
-![image](https://user-images.githubusercontent.com/5957713/56863585-80f5c480-69b8-11e9-9ff8-139ab3a06da6.png)
+
+`Note: menuconfig has a slightly different look and has some graphical bugs but it works fine`
+
+![image](https://bertvoldenuit.github.io/Nuttx-mdwiki/en/pages/uploads/images/menu_config_WSL.png)
 
 Exit and save
 
@@ -209,10 +242,17 @@ Compile NuttX and flash the Nucleo board:
 
 ```
 make
-openocd -f interface/stlink.cfg -f target/stm32f4x.cfg -c init -c "reset halt" -c "flash write_image erase nuttx.bin 0x08000000"
-sudo minicom
-Press reset button on the Nucleo board
 ```
+
+switch to Windows `Command Prompt` 
+```
+cd <nuttxspace>
+cd nuttx
+openocd -f interface/stlink.cfg -f target/stm32f4x.cfg -c init -c "reset halt" -c "flash write_image erase nuttx.bin 0x08000000"
+```
+
+launch `Tera Term`
+Press reset button on the Nucleo board
 
 Type `help` to get the command list:
 ```
