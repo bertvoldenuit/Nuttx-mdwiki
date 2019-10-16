@@ -10,7 +10,7 @@ In this tutorial, the Nucleo-F411re is used.
 
 ## Setting a working directory
 
-It is strongly not recommended to modify any file in your ubuntu file system by using a Windows application like 
+It is strongly NOT recommended to modify any file in your ubuntu file system by using a Windows application like 
 Windows file explorer or a text editor executed on Windows. Then, how to interract with Nuttx files?? 
 Simple! All files will be on your home directory in Windows. From the Ubuntu Bash, Windows files are reachable from the `/mnt` folder.
 In order to acces your working directory easily from your Ubuntu Bash, let's create some alias. 
@@ -108,7 +108,7 @@ As a result the `nuttx.bin` file is created.
 First, you need to install `OpenOCD`. You can dowload it by visiting this [website](https://gnutoolchains.com/arm-eabi/openocd/). You can
 download a compiled version for windows. Save the zip file to your nuttxspace. You will need to unzip it with [7zip](https://www.7-zip.org/download.html). Rename the folder to `openocd`.
 
-Then, set the `path` to this folder. type `environment variable` in the start menu search bar:
+Then, set the `path` to this folder. Type `environment variable` in the start menu search bar:
 
 - set the `path='c:\<nuttxspace_directory>\openocd\bin'`.
 
@@ -117,7 +117,7 @@ Then, set the `path` to this folder. type `environment variable` in the start me
 
 Let's look at how to flash the target board. With a Nucleo board there are two ways of doing it.
 
-+ Nucleo board is seen by linux as a flash drive. Simply drag and drop `nuttx.bin` at the root of the device. You're done!
++ Nucleo board is seen by Windows as a flash drive. Simply drag and drop `nuttx.bin` at the root of the device. You're done!
 + Use openocd to use the programer/debugger to flash the target board. It will be very useful later to use stlink-v2 as a debugger.
 
 Plug the Nucleo board to the computer with the usb cable.
@@ -178,7 +178,7 @@ openocd -f interface/stlink.cfg -f target/stm32f4x.cfg -c init -c "reset halt" -
 In order to execute commands on the NuttX Operating System, we must connect to the NuttShell. Let's setup a serial terminal.
 You can dowload `TeraTerm` [here](https://ttssh2.osdn.jp/). Install and launch it.
 
-In order to get the `COM#` number, you can check it in the device manager. Once, Tera Term is set with the right com port,
+In order to get the `COM#` number, you can check it in the Device Manager. Once, Tera Term is set with the right com port,
 reset the board.
 
 ![image](https://bertvoldenuit.github.io/Nuttx-mdwiki/en/pages/uploads/images/device_com_number.png)
