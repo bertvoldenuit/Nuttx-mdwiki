@@ -7,6 +7,7 @@ The purpose of this exercice is to get hands on Nuttx. The first exercise, shows
 At first, the aim is to make one LED to blink. That's all!
 
 ## Preliminaries
+------------------
 
 Windows WSL user should set the `nuttxspace` in the Windows `home` directory of their choice. For exemple, the following alias could be set:
 
@@ -35,6 +36,7 @@ The exercice can be adapted for an other board using the following table:
 
 
 ## Nuttx configuration
+------------------------
 
 The STM32F4Discovery should be set with the micro-usb port enabled, so let's use the pre-configuration option `usbnsh`
 
@@ -70,6 +72,7 @@ make menuconfig
 Exit and Save
 
 ## Leds application modification
+---------------------------------
 
 Let's open and modify the `leds_main.c`. But first, it is recommended to save a backup:
 
@@ -212,6 +215,7 @@ int main(int argc, FAR char *argv[])
 ```
 
 ## Running the `leds` application
+----------------------------------
 
 Once you have implemented your code, save and exit the file. If you feel like it, you can make all the leds blink like an LED chaser.
 Then compile sources:
@@ -260,5 +264,6 @@ nsh>
 
 Type `leds`
 
-[RTOS Exercise 1 Video](https://vimeo.com/367062762)
+## RTOS Exercise 1 Video
+--------------------------
 [![RTOS Exercise 1](https://i.vimeocdn.com/video/823299881.jpg)](https://vimeo.com/367062762 "RTOS Exercise 1")
