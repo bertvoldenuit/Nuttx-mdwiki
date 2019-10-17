@@ -260,3 +260,5 @@ nsh>
 
 Type `leds`
 
+[RTOS Exercise 1 Video](https://vimeo.com/367062762)
+[![RTOS Exercise 1](https://i.vimeocdn.com/video/823299881.jpg)](https://vimeo.com/367062762 "RTOS Exercise 1")
