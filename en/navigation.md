@@ -49,6 +49,7 @@
 [RTOS Exercises]()
 
   * [Introduction](pages/RTOS/intro.md)
+  * [Exercise 1](pages/RTOS/preliminary_exercise.md) 
   * [Exercise 1](pages/RTOS/exercise_1.md) 
   - - - -
   <!-- * # SubMenu Heading 2

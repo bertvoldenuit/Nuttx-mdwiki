@@ -1,11 +1,75 @@
-# Exercice 1: Periodic single task
+# Preliminary Exercice: Blinking leds
 
-The purpose of this exercice is to create a periodic single task on Nuttx. It describes how to create a task and implement the task. The aim is to make an LED blink using Nuttx RTOS capabilities.
+The purpose of this exercice is to get hands on Nuttx. The preliminary exercise, shows how to make (modify) the first application. Nuttx offers a lot of Application examples already set. Here, the `leds` example is perfect for what is needed to do:
+- The Application is set in the 'Menu Config'
+- The application file `leds_main.c` is easy to read and to modify.
 
-## Preliminaries and Nuttx configuration
------------------------------------------
+At first, the aim is to make one LED to blink. That's all!
 
-In order to configure Nuttx for this exercise, visit [Preliminary Exercice](pages/RTOS/preliminary_exercise.md)
+## Preliminaries
+------------------
+
+Windows WSL user should set the `nuttxspace` in the Windows `home` directory of their choice. For exemple, the following alias could be set:
+
+```
+alias win_home='cd /mnt/c/<win_home>'
+```
+
+Then to go to `nuttxspace`:
+
+```
+cd win_home/nuttxspace
+```
+
+For concistency, the Linux notation will be used. The `nuttxspace` directory is located in the `home` directory. The following shortcut is used: `~`
+
+```
+cd ~/nuttxspace
+```
+
+The exercice can be adapted for an other board using the following table:
+
+| Replace          | by                                                                            |
+|------------------|-------------------------------------------------------------------------------|
+| `<board_name>` | your board's name   (e.g. `<board_name>`/src --> **nucleo-f4x1re**/src)     |
+| `<arch_name>`  | MCU familly or arch   (e.g. `<arch_name>`_ssd1306.c -> **stm32**_ssd1306.c) |
+
+
+## Nuttx configuration
+------------------------
+
+The STM32F4Discovery should be set with the micro-usb port enabled, so let's use the pre-configuration option `usbnsh`
+
+```
+cd ~/nuttxspace/nuttx
+make distclean
+cd tools/
+./configure.sh stm32f4discovery:usbnsh
+cd ..
+```
+
+For other boards, the above can be adapted using your board_name instead of stm32f4discovery and using the normal pre-configuration `nsh`:
+
+```
+./configure.sh <board_name>:nsh
+```
+
+It's time to configure the `leds` Application in the `Menu Config`. Type:
+
+```
+make menuconfig
+```
+
+  |       Tree root           | Sublevel 1                  | Sublevel 2                   |  Sublevel 3             |   Sublevel 4            |Enable |
+  | ------------------------- |-----------------------------|----------------------------- | ----------------------- |  ---------------------- |:-----:|
+  | Build Setup               | Build Host Platform         | Linux                        |                         |                         | yes   |
+  | Board Selection           | Board LED Status support    |                              |                         |                         | `no`  |  
+  | Board Selection           | Enable boardctl() interface |                              |                         |                         | yes   |  
+  | Device Drivers            | LED Support                 | LED driver                   |                         |                         | yes   |
+  | Device Drivers            | Generic Lower Half LED Driver|                             |                         |                         | yes   | 
+  | Application Configuration |  Example                    | LED driver example           |                         |                         | yes   |
+
+Exit and Save
 
 ## Leds application modification
 ---------------------------------
@@ -23,7 +87,7 @@ Edit `leds_main.c` with your favorite editor. The basic structure of the file is
 - Led daemon function which provide algorithm to turn on and off leds
 - Main function which is called, when you type the name of the application `leds` in the Nutt Shell, and which calls the Led daemon
 
-For this first exercice, `main` function is kept as is. In the `led_daemon` function, remove the code between the brackets of the `for` loop and also remove code from `Get the set of LEDs supported` up until `Now loop forever, changing the LED set`. The source code should look like this:
+For this first exercice, let's make it dead simple. The Led daemon is erased and the source code in between the main function brackets is also erase. The source code should look like this:
 
 ```c
 /****************************************************************************
@@ -74,76 +138,8 @@ For this first exercice, `main` function is kept as is. In the `led_daemon` func
 #include <fcntl.h>
 #include <sched.h>
 #include <errno.h>
-#include<time.h>
 
 #include <nuttx/leds/userled.h>
-
-/****************************************************************************
- * Private Data
- ****************************************************************************/
-
-static bool g_led_daemon_1_started;
-static bool g_led_daemon_2_started;
-
-/****************************************************************************
- * Private Functions
- ****************************************************************************/
-
-/****************************************************************************
- * Name: led_daemon
- ****************************************************************************/
-
-
-static int led_daemon(int argc, char *argv[])
-{
-  userled_set_t supported;
-  userled_set_t ledset;
-  bool incrementing;
-  int ret;
-  int fd;
-
-  /* Indicate that we are running */
-
-  g_led_daemon_started = true;
-  printf("led_daemon: Running\n");
-
-  /* Open the LED driver */
-
-  printf("led_daemon: Opening %s\n", CONFIG_EXAMPLES_LEDS_DEVPATH);
-  fd = open(CONFIG_EXAMPLES_LEDS_DEVPATH, O_WRONLY);
-  if (fd < 0)
-    {
-      int errcode = errno;
-      printf("led_daemon: ERROR: Failed to open %s: %d\n",
-             CONFIG_EXAMPLES_LEDS_DEVPATH, errcode);
-      goto errout;
-    }
-
-
-  /* Now loop forever, changing the LED set */
-
-  ledset       = 0;
-  incrementing = true;
-
-  for (; ; )
-    {
-
-    }
-
-errout_with_fd:
-  (void)close(fd);
-
-errout:
-  g_led_daemon_started = false;
-
-  printf("led_daemon: Terminating\n");
-  return EXIT_FAILURE;
-}
-
-
-/****************************************************************************
- * Public Functions
- ****************************************************************************/
 
 /****************************************************************************
  * leds_main
@@ -151,59 +147,17 @@ errout:
 
 int main(int argc, FAR char *argv[])
 {
-  int ret;
 
-  printf("leds_main: Starting the led_daemon\n");
-  if (g_led_daemon_started)
-    {
-      printf("leds_main: led_daemon already running\n");
-      return EXIT_SUCCESS;
-    }
-
-  ret = task_create("led_daemon", CONFIG_EXAMPLES_LEDS_PRIORITY,
-                    CONFIG_EXAMPLES_LEDS_STACKSIZE, led_daemon,
-                    NULL);
-  if (ret < 0)
-    {
-      int errcode = errno;
-      printf("leds_main: ERROR: Failed to start led_daemon: %d\n",
-             errcode);
-      return EXIT_FAILURE;
-    }
-
-  printf("leds_main: led_daemon started\n");
   return EXIT_SUCCESS;
 }
 
 ```
 
-### The `main` function
----------------------------
-
-This is how to create a task that drive the LED, see [Nuttx Documentation](http://nuttx.org/doku.php?id=documentation:userguide): 
+This is how to create a variable that drive the LED: 
 
 ```c
-int task_create(char *name, int priority, int stack_size, main_t entry, char * const argv[]);
+struct userled_s led1; // create the variable 'led'
 ```
- Input Parameters:
-
-- name. Name of the new task:                     "Led deamon"
-- priority. Priority of the new task:             "100" This is the default value in Nuttx. The higher value the more the priority.
-- stack_size. size (in bytes) of the stack needed:"CONFIG_EXAMPLES_LEDS_STACKSIZE" Keep default value. Here it is 2048 Bytes.
-- entry. Entry point of a new task:               "led_deamon"
-- argv. A pointer to an array of input parameters. The array should be terminated with a NULL argv[] value. If no parameters are required, argv may be NULL. 
-
-Returned Value:
-
-- Returns the non-zero task ID of the new task or ERROR if memory is insufficient or the task cannot be created (errno is not set).
-
-Stack is a task dedicated amount of RAM. It is used to save the context of the task when it is interrupted. It is reloaded when the task is resumed.    
-
-### The `led_deamon` function
--------------------------------
-
-Inside the `for` loop, make the led(s) blink(s) using the following:
-
 
 In ```~/nuttxspace/nuttx/board/arm/stm32f4discovery/src/stm32_userleds.c```, the LED number is mapped to the GPIO as the following array :
 
@@ -211,7 +165,7 @@ In ```~/nuttxspace/nuttx/board/arm/stm32f4discovery/src/stm32_userleds.c```, the
 
 ```c
 led1.ul_led = 0;       /* Identifies the LED. 0 -> GPIO_LED1; 1 -> GPIO_LED2, etc... */
-led1.ul_on = true;     /* The LED state.  true: ON; false: OFF */
+led1.ul_on = true;		 /* The LED state.  true: ON; false: OFF */
 ```
 
 To open the led driver:
@@ -232,12 +186,33 @@ a simple delay function in microseconds:
 usleep();
 ```
 
-### usleep()
--------------
+so the initialization of the main function should look like this:
 
-Here is an interresting article in the Nuttx Documentation: [Short Time Delays](http://nuttx.org/doku.php?id=wiki:nxinternal:time-delays&s[]=usleep)
+```c
+int main(int argc, FAR char *argv[])
+{
+  struct userled_s led1;
+  int ret;
+  int fd;
 
-usleep()'s behavior is to wait to assure that at least usec microseconds has elapsed. It will suspend the calling thread (led_deamon task) for at least usec microseconds with some microseconds of precision (see [Short Time Delays](http://nuttx.org/doku.php?id=wiki:nxinternal:time-delays&s[]=usleep)). 
+  led1.ul_led = 0;
+  led1.ul_on = 1;
+   
+  // Open the LED driver 
+
+  printf("led_driver: Opening %s\n", CONFIG_EXAMPLES_LEDS_DEVPATH);
+  fd = open(CONFIG_EXAMPLES_LEDS_DEVPATH, O_WRONLY);
+  if (fd < 0)
+    {
+      printf("led_driver: ERROR: Failed to open\n");
+      return EXIT_FAILURE;
+    }
+ 
+/* Put your user code here */
+
+  return EXIT_SUCCESS;
+}
+```
 
 ## Running the `leds` application
 ----------------------------------
@@ -289,4 +264,6 @@ nsh>
 
 Type `leds`
 
-
+## RTOS Exercise 1 Video
+--------------------------
+[![RTOS Preliminary Exercise](https://i.vimeocdn.com/video/823299881.jpg)](https://vimeo.com/367062762 "RTOS Preliminary Exercise")
