@@ -264,6 +264,6 @@ nsh>
 
 Type `leds`
 
-## RTOS Exercise 1 Video
+## RTOS Preliminary Exercise Video
 --------------------------
 [![RTOS Preliminary Exercise](https://i.vimeocdn.com/video/823299881.jpg)](https://vimeo.com/367062762 "RTOS Preliminary Exercise")
