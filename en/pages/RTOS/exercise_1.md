@@ -2,6 +2,8 @@
 
 The purpose of this exercice is to create a periodic single task on Nuttx. It describes how to create a task and implement the task. The aim is to make an LED blink using Nuttx RTOS capabilities.
 
+This exercise is based on ```Real-time Operating Systems Book 2 - The Practice, by Jim Cooling``` chapter 2 - exercise 1
+
 ## Preliminaries and Nuttx configuration
 -----------------------------------------
 
@@ -23,7 +25,7 @@ Edit `leds_main.c` with your favorite editor. The basic structure of the file is
 - Led daemon function which provide algorithm to turn on and off leds
 - Main function which is called, when you type the name of the application `leds` in the Nutt Shell, and which calls the Led daemon
 
-For this first exercice, `main` function is kept as is. In the `led_daemon` function, remove the code between the brackets of the `for` loop and also remove code from `Get the set of LEDs supported` up until `Now loop forever, changing the LED set`. The source code should look like this:
+For this first exercice, `main` function is kept as is. In the `led_daemon` function, remove the code between the brackets of the `for` loop, remove code from `Get the set of LEDs supported` up until `for` loop and also and also the 3 first variable declaration. The source code should look like this:
 
 ```c
 /****************************************************************************
@@ -96,9 +98,7 @@ static bool g_led_daemon_2_started;
 
 static int led_daemon(int argc, char *argv[])
 {
-  userled_set_t supported;
-  userled_set_t ledset;
-  bool incrementing;
+  <Put your LED variable(s)>
   int ret;
   int fd;
 
@@ -120,14 +120,9 @@ static int led_daemon(int argc, char *argv[])
     }
 
 
-  /* Now loop forever, changing the LED set */
-
-  ledset       = 0;
-  incrementing = true;
-
   for (; ; )
     {
-
+      <Put your code to blink LED here>
     }
 
 errout_with_fd:
@@ -180,7 +175,7 @@ int main(int argc, FAR char *argv[])
 ### The `main` function
 ---------------------------
 
-This is how to create a task that drive the LED, see [Nuttx Documentation](http://nuttx.org/doku.php?id=documentation:userguide): 
+This is how to create a task that drive the LED, see [Nuttx Documentation](https://nuttx.apache.org/docs/latest/reference/user/01_task_control.html?highlight=task_create#c.task_create): 
 
 ```c
 int task_create(char *name, int priority, int stack_size, main_t entry, char * const argv[]);
@@ -202,24 +197,30 @@ Stack is a task dedicated amount of RAM. It is used to save the context of the t
 ### The `led_deamon` function
 -------------------------------
 
-Inside the `for` loop, make the led(s) blink(s) using the following:
+#### Variable declaration
 
-
-In ```~/nuttxspace/nuttx/board/arm/stm32f4discovery/src/stm32_userleds.c```, the LED number is mapped to the GPIO as the following array :
-
-{GPIO_LED1, GPIO_LED2, GPIO_LED3, GPIO_LED4}    
+This is how to create a variable that drive the LED: 
 
 ```c
-led1.ul_led = 0;       /* Identifies the LED. 0 -> GPIO_LED1; 1 -> GPIO_LED2, etc... */
-led1.ul_on = true;     /* The LED state.  true: ON; false: OFF */
-```
+struct userled_s led1; // create the variable 'led1'
+```   
 
-To open the led driver:
+#### To open the led driver:
 
 ```c
 int fd;
 fd = open(CONFIG_EXAMPLES_LEDS_DEVPATH, O_WRONLY);
 ```
+
+#### Set LED state
+```c
+led1.ul_led = 0;       /* Identifies the LED. 0 -> GPIO_LED1; 1 -> GPIO_LED2, etc... */
+led1.ul_on = true;     /* The LED state.  true: ON; false: OFF */
+```
+
+In ```~/nuttxspace/nuttx/board/arm/stm32f4discovery/src/stm32_userleds.c```, the LED number is mapped to the GPIO as the following array :
+
+{GPIO_LED1, GPIO_LED2, GPIO_LED3, GPIO_LED4} 
 
 To actually set the LED state:
 
@@ -227,17 +228,20 @@ To actually set the LED state:
 ret = ioctl(fd, ULEDIOC_SETLED, &led1);
 ```
 
-a simple delay function in microseconds:
+#### Delay
+
+A simple delay function in microseconds:
 ```c
 usleep();
 ```
 
-### usleep()
--------------
+Here is an interresting article in the Nuttx Documentation: [Short Time Delays](https://cwiki.apache.org/confluence/display/NUTTX/Short+Time+Delays)
 
-Here is an interresting article in the Nuttx Documentation: [Short Time Delays](http://nuttx.org/doku.php?id=wiki:nxinternal:time-delays&s[]=usleep)
+usleep()'s behavior is to wait to assure that at least usec microseconds has elapsed. It will suspend the calling thread (led_deamon task) for at least usec microseconds with some microseconds of precision (see [Short Time Delays](https://cwiki.apache.org/confluence/display/NUTTX/Short+Time+Delays)). 
 
-usleep()'s behavior is to wait to assure that at least usec microseconds has elapsed. It will suspend the calling thread (led_deamon task) for at least usec microseconds with some microseconds of precision (see [Short Time Delays](http://nuttx.org/doku.php?id=wiki:nxinternal:time-delays&s[]=usleep)). 
+#### `for` loop
+
+Inside the `for` loop, make the led(s) blink(s) using the functionnalities described above. For example, make the LED blinking with a `ON` period of 2000ms and `OFF` period of 500ms.
 
 ## Running the `leds` application
 ----------------------------------

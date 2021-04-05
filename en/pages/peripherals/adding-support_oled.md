@@ -42,6 +42,38 @@ by
 `#include "<board_name>.h"`
 
 
+Since we just added a new file in the `/src` directory it must be referenced in `Make.defs`, add:
+
+```
+ifeq ($(CONFIG_LCD_SSD1306_I2C),y)
+CSRCS += stm32_lcd_ssd1306.c
+endif
+```
+
+Then edit <arch_name>_bringup.c, and add :
+
+In Included Files Section
+```
+#ifdef CONFIG_VIDEO_FB
+#warning fb init
+#  include <nuttx/video/fb.h>
+#endif
+```
+
+and in Public Functions
+
+```
+#ifdef CONFIG_VIDEO_FB
+  /* Initialize and register the framebuffer driver */
+
+  ret = fb_register(0, 0);
+  if (ret < 0)
+    {
+      syslog(LOG_ERR, "ERROR: fb_register() failed: %d\n", ret);
+    }
+#endif
+```
+
 let's check i2c or spi pin configurations in board.h. 
 
 ```
@@ -54,10 +86,10 @@ The nucleo-f411re has several output options:
 
 In my case I use I2C. board.h sets I2C pins in open-drain so pullup resistors need to be added:
 ```
-#define GPIO_I2C2_SCL_GPIO \
-   (GPIO_OUTPUT|GPIO_OPENDRAIN|GPIO_SPEED_50MHz|GPIO_OUTPUT_SET|GPIO_PORTB|GPIO_PIN10)
-#define GPIO_I2C2_SDA_GPIO \
-   (GPIO_OUTPUT|GPIO_OPENDRAIN|GPIO_SPEED_50MHz|GPIO_OUTPUT_SET|GPIO_PORTB|GPIO_PIN11)
+#define GPIO_I2C1_SCL_GPIO \
+   (GPIO_OUTPUT|GPIO_OPENDRAIN|GPIO_SPEED_50MHz|GPIO_OUTPUT_SET|GPIO_PORTB|GPIO_PIN8)
+#define GPIO_I2C1_SDA_GPIO \
+   (GPIO_OUTPUT|GPIO_OPENDRAIN|GPIO_SPEED_50MHz|GPIO_OUTPUT_SET|GPIO_PORTB|GPIO_PIN9)
 ```
 
 Now we need to configure the os.
