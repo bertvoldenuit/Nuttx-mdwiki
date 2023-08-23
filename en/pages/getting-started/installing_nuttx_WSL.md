@@ -57,8 +57,8 @@ nuttxspace
 4- Clone NuttX repository
 ```
 nuttxspace
-git clone https://bitbucket.org/nuttx/nuttx
-git clone https://bitbucket.org/nuttx/apps
+git clone https://github.com/apache/nuttx.git
+git clone https://github.com/apache/nuttx-apps
 git clone https://bitbucket.org/nuttx/tools
 ```
 

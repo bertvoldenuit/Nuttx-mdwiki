@@ -52,6 +52,9 @@
   * [Preliminary Exercise](pages/RTOS/preliminary_exercise.md) 
   * [Exercise 1](pages/RTOS/exercise_1.md) 
   - - - -
+[Troubleshooting]()
+
+  * [Compilation](pages/troubleshooting/compilation.md)  
   <!-- * # SubMenu Heading 2
   * [SubMenu Item 3](pages/subitem3.md)
   - - - -
