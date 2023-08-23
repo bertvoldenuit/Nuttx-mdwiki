@@ -46,8 +46,8 @@ sudo make install
 6- Clone NuttX repository
 ```
 cd ~/nuttxspace/
-git clone https://github.com/apache/nuttx.git
-git clone https://github.com/apache/nuttx-apps
+git clone https://github.com/apache/nuttx.git nuttx
+git clone https://github.com/apache/nuttx-apps apps
 git clone https://bitbucket.org/nuttx/tools
 ```
 
